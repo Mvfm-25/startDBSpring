@@ -18,10 +18,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Controller {
 
+    int hits = 0;
+
     @GetMapping("")
     @CrossOrigin(origins = "*")
     public String home() {
-        return "API StartDB está funcionando!";
+    return """
+        <html>
+            <body style="font-family: sans-serif; text-align: center; margin-top: 50px;">
+                <h1>G.D.M. IS ONLINE</h1>    
+                <button type='button' onclick="window.location.href='/gdm'">
+                    G.D.M.
+                </button>
+            </body>
+        </html>
+    """;
+    }
+
+    @GetMapping("/gdm")
+    public String gdm(){
+        if(hits == 5){
+            hits = 0;
+            return "G.D.M. - Always improving!";
+        }
+        
+        hits++;
+        return "G.D.M. - Being nice since 2018!";
     }
     
 }
