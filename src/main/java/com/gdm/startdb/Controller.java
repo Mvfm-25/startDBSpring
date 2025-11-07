@@ -18,11 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Controller {
 
+    private Set<Membros> nicers = new HashSet<>();
+
+    public Controller() {
+        nicers = new HashSet<Membros>();
+
+        nicers.add(new Membros("Mvfm", "Nicest"));
+        nicers.add(new Membros("Kappe", "Nicer"));
+        nicers.add(new Membros("Sheedoky", "Nicer"));
+    }
+    
+
     int hits = 0;
 
     @GetMapping("")
     @CrossOrigin(origins = "*")
     public String home() {
+        
     return """
         <html>
             <body style="font-family: sans-serif; text-align: center; margin-top: 50px;">
@@ -45,5 +57,17 @@ public class Controller {
         hits++;
         return "G.D.M. - Being nice since 2018!";
     }
+
+    @GetMapping("/nice")
+    public Set<Membros> nice(){
+        return nicers;
+    }
+    
+    @PostMapping("/addnicer")
+    public String addNicer(@RequestBody List<Membros> novosNicers){
+        nicers.addAll(novosNicers);
+        return "Nice(s) adicionado com sucesso!";
+    }
+    
     
 }
