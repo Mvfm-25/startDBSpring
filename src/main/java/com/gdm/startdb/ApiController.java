@@ -7,6 +7,7 @@ package com.gdm.startdb;
 
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties.Tomcat.Mbeanregistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,6 +22,8 @@ import org.springframework.ui.Model;
 @RestController
 public class ApiController {
 
+    @Autowired private NiceService niceService;
+
     private Set<Membros> nicers = new HashSet<>();
     public ApiController() {
         nicers = new HashSet<Membros>();
@@ -28,11 +31,6 @@ public class ApiController {
         nicers.add(new Membros("Mvfm", "Nicest"));
         nicers.add(new Membros("Kappe", "Nicer"));
         nicers.add(new Membros("Sheedoky", "Nicer"));
-    }
-
-    @GetMapping("/nice")
-    public Set<Membros> nice(){
-        return nicers;
     }
 
     @PostMapping("/addnicer")

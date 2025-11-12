@@ -1,3 +1,4 @@
+com\gdm\startdb\NiceService.class
 com\gdm\startdb\ApiController.class
 com\gdm\startdb\ViewController.class
 com\gdm\startdb\Membros.class

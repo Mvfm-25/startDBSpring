@@ -7,6 +7,7 @@ package com.gdm.startdb;
 
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties.Tomcat.Mbeanregistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,6 +23,8 @@ import org.springframework.ui.Model;
 // Parte visual, HTML com Thymeleaf.
 @Controller
 public class ViewController {
+
+    @Autowired private NiceService niceService;
 
     private int hits = 0;
 
@@ -40,7 +43,13 @@ public class ViewController {
             hits++;
             modelo.addAttribute("message", "G.D.M. - Being nice since 2018!");
         }
-        return "home";
+        return "gdm";
     }
-    
+
+    @GetMapping("/nice")
+    public String showNicers(Model modelo){
+        modelo.addAttribute("nicers", niceService.getAllNicers());
+        return "nice";
+    }
+
 }
