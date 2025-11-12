@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>G.D.M.</title>
+</head>
+<body style="font-family: sans-serif; text-align: center; margin-top: 50px;">
+    <h1 th:text="${message}">G.D.M. IS ONLINE</h1>
+    <p>Hits: <span th:text="${hits}">0</span></p>
+    <button type='button' onclick="window.location.href='/gdm'">
+        G.D.M.
+    </button>
+</body>
+</html>

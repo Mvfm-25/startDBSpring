@@ -72,6 +72,13 @@
         	<artifactId>spring-boot-devtools</artifactId>
         	<optional>true</optional>
     	</dependency>
+
+		<!-- Dependência para usar Thymeleaf como motor de templates -->
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
