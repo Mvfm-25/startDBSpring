@@ -24,18 +24,10 @@ public class ApiController {
 
     @Autowired private NiceService niceService;
 
-    private Set<Membros> nicers = new HashSet<>();
-    public ApiController() {
-        nicers = new HashSet<Membros>();
-
-        nicers.add(new Membros("Mvfm", "Nicest"));
-        nicers.add(new Membros("Kappe", "Nicer"));
-        nicers.add(new Membros("Sheedoky", "Nicer"));
-    }
-
     @PostMapping("/addnicer")
     public String addNicer(@RequestBody List<Membros> novosNicers){
-        nicers.addAll(novosNicers);
+        niceService.addNicers(novosNicers);
         return "Nice(s) adicionado com sucesso!";
     }
+
 }
