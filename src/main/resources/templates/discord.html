@@ -25,7 +25,7 @@
         h1 {
             color: #ffffff;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             font-size: 2.5em;
         }
         
@@ -42,6 +42,83 @@
             margin-bottom: 10px;
         }
         
+        /* Search and Filter Section */
+        .search-section {
+            background-color: #2f3136;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .search-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .search-input, .filter-select {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #40444b;
+            color: #dcddde;
+            font-size: 14px;
+        }
+        
+        .search-input:focus, .filter-select:focus {
+            outline: 2px solid #7289da;
+        }
+        
+        .date-range {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .search-btn {
+            padding: 10px 20px;
+            background-color: #7289da;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .search-btn:hover {
+            background-color: #5b6eae;
+        }
+        
+        .clear-btn {
+            padding: 10px 20px;
+            background-color: #ed4245;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .clear-btn:hover {
+            background-color: #c03537;
+        }
+        
+        .search-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        .results-info {
+            color: #72767d;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
         .channels-container {
             display: grid;
             gap: 20px;
@@ -50,16 +127,21 @@
         .channel {
             background-color: #2f3136;
             border-radius: 8px;
-            padding: 20px;
+            margin-bottom: 15px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
         
         .channel-header {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
+            padding: 20px;
+            cursor: pointer;
             border-bottom: 2px solid #7289da;
+            transition: background-color 0.2s;
+        }
+        
+        .channel-header:hover {
+            background-color: #36393f;
         }
         
         .channel-icon {
@@ -82,10 +164,31 @@
             font-size: 0.9em;
         }
         
+        .collapse-icon {
+            margin-left: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .collapse-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+        
+        .channel-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .channel-content.expanded {
+            max-height: 10000px;
+            transition: max-height 0.5s ease-in;
+        }
+        
         .messages {
             display: flex;
             flex-direction: column;
             gap: 15px;
+            padding: 20px;
         }
         
         .message {
@@ -99,6 +202,11 @@
         .message:hover {
             background-color: #484c52;
             transform: translateX(5px);
+        }
+        
+        .message.highlight {
+            background-color: #faa81a33;
+            border-left-color: #faa81a;
         }
         
         .message-header {
@@ -159,6 +267,65 @@
             content: "📎";
         }
         
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 30px 0;
+        }
+        
+        .pagination-btn {
+            padding: 10px 15px;
+            background-color: #7289da;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .pagination-btn:hover:not(:disabled) {
+            background-color: #5b6eae;
+        }
+        
+        .pagination-btn:disabled {
+            background-color: #40444b;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .pagination-info {
+            color: #dcddde;
+            font-weight: bold;
+        }
+        
+        .page-numbers {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .page-number {
+            padding: 8px 12px;
+            background-color: #40444b;
+            color: #dcddde;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .page-number:hover {
+            background-color: #7289da;
+        }
+        
+        .page-number.active {
+            background-color: #7289da;
+            font-weight: bold;
+        }
+        
         .back-btn {
             display: block;
             width: 200px;
@@ -196,56 +363,339 @@
             .channel-name {
                 font-size: 1.2em;
             }
+            
+            .search-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-numbers {
+                flex-wrap: wrap;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Discord - G.D.M.</h1>
+        <h1>💬 Discord - G.D.M.</h1>
         
         <div class="server-info" th:if="${servidor}">
             <h2>Servidor: <span th:text="${servidor.nome}">Nome do Servidor</span></h2>
             <p style="color: #72767d;">ID: <span th:text="${servidor.id}">ID</span></p>
         </div>
         
+        <!-- Search and Filter Section -->
+        <div class="search-section">
+            <div class="search-grid">
+                <input type="text" id="searchContent" class="search-input" placeholder="🔍 Buscar por conteúdo ou autor...">
+                
+                <select id="filterCanal" class="filter-select">
+                    <option value="">Todos os canais</option>
+                    <option th:each="canal : ${servidor.canais}" th:value="${canal.nome}" th:text="${canal.nome}">Canal</option>
+                </select>
+                
+                <input type="month" id="dateFrom" class="search-input" placeholder="De:">
+                <input type="month" id="dateTo" class="search-input" placeholder="Até:">
+            </div>
+            
+            <div class="search-controls">
+                <button class="clear-btn" onclick="clearFilters()">🗑️ Limpar</button>
+                <button class="search-btn" onclick="applyFilters()">🔎 Buscar</button>
+            </div>
+            
+            <div class="results-info" id="resultsInfo"></div>
+        </div>
+        
         <div class="channels-container">
-            <div class="channel" th:each="canal : ${servidor.canais}">
-                <div class="channel-header">
+            <div class="channel" th:each="canal, iterStat : ${servidor.canais}" th:attr="data-canal-nome=${canal.nome}">
+                <div class="channel-header" th:onclick="'toggleChannel(' + ${iterStat.index} + ')'">
                     <span class="channel-icon">#</span>
                     <span class="channel-name" th:text="${canal.nome}">nome-do-canal</span>
                     <span class="message-count" th:text="${#lists.size(canal.mensagens)} + ' mensagens'">0 mensagens</span>
+                    <span class="collapse-icon collapsed" th:id="'collapse-icon-' + ${iterStat.index}">▼</span>
                 </div>
                 
-                <div class="messages" th:if="${!#lists.isEmpty(canal.mensagens)}">
-                    <div class="message" th:each="msg : ${canal.mensagens}">
-                        <div class="message-header">
-                            <span class="author-name" th:text="${msg.autorNome}">Autor</span>
-                            <span class="message-date" th:text="${msg.data}">Data</span>
-                        </div>
-                        
-                        <div class="message-content" th:text="${msg.conteudo}">
-                            Conteúdo da mensagem
-                        </div>
-                        
-                        <div class="attachments" th:if="${!#lists.isEmpty(msg.arquivos)}">
-                            <a th:each="arquivo : ${msg.arquivos}" 
-                               th:href="${arquivo}" 
-                               class="attachment" 
-                               target="_blank">
-                                <span class="attachment-icon"></span>
-                                <span>Arquivo</span>
-                            </a>
+                <div class="channel-content" th:id="'channel-content-' + ${iterStat.index}">
+                    <div class="messages" th:if="${!#lists.isEmpty(canal.mensagens)}">
+                        <div class="message" 
+                             th:each="msg : ${canal.mensagens}"
+                             th:attr="data-autor=${msg.autorNome}, data-conteudo=${msg.conteudo}, data-data=${msg.data}, data-canal=${canal.nome}">
+                            <div class="message-header">
+                                <span class="author-name" th:text="${msg.autorNome}">Autor</span>
+                                <span class="message-date" th:text="${msg.data}">Data</span>
+                            </div>
+                            
+                            <div class="message-content" th:text="${msg.conteudo}">
+                                Conteúdo da mensagem
+                            </div>
+                            
+                            <div class="attachments" th:if="${!#lists.isEmpty(msg.arquivos)}">
+                                <a th:each="arquivo : ${msg.arquivos}" 
+                                   th:href="${arquivo}" 
+                                   class="attachment" 
+                                   target="_blank">
+                                    <span class="attachment-icon"></span>
+                                    <span>Arquivo</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="no-messages" th:if="${#lists.isEmpty(canal.mensagens)}">
-                    Nenhuma mensagem neste canal
+                    
+                    <div class="no-messages" th:if="${#lists.isEmpty(canal.mensagens)}">
+                        Nenhuma mensagem neste canal
+                    </div>
                 </div>
             </div>
         </div>
         
+        <!-- Pagination -->
+        <div class="pagination" id="pagination">
+            <button class="pagination-btn" onclick="changePage('first')" id="firstBtn">⏮️ Primeira</button>
+            <button class="pagination-btn" onclick="changePage('prev')" id="prevBtn">◀️ Anterior</button>
+            
+            <div class="page-numbers" id="pageNumbers"></div>
+            
+            <button class="pagination-btn" onclick="changePage('next')" id="nextBtn">Próxima ▶️</button>
+            <button class="pagination-btn" onclick="changePage('last')" id="lastBtn">Última ⏭️</button>
+        </div>
+        
+        <div class="pagination-info" style="text-align: center; color: #72767d; margin-bottom: 20px;">
+            Mostrando <span id="showingCount">0</span> mensagens
+        </div>
+        
         <a href="/" class="back-btn">← Voltar para Home</a>
     </div>
+    
+    <script>
+        // Estado da aplicação
+        let allMessages = [];
+        let filteredMessages = [];
+        let currentPage = 1;
+        const messagesPerPage = 50;
+        
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            collectAllMessages();
+            renderPagination();
+            updateResultsInfo();
+        });
+        
+        // Toggle de canais (colapsar/expandir)
+        function toggleChannel(index) {
+            const content = document.getElementById('channel-content-' + index);
+            const icon = document.getElementById('collapse-icon-' + index);
+            
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                icon.classList.add('collapsed');
+            } else {
+                content.classList.add('expanded');
+                icon.classList.remove('collapsed');
+            }
+        }
+        
+        // Coletar todas as mensagens
+        function collectAllMessages() {
+            const messageElements = document.querySelectorAll('.message');
+            allMessages = Array.from(messageElements);
+            filteredMessages = [...allMessages];
+        }
+        
+        // Aplicar filtros
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchContent').value.toLowerCase();
+            const canalFilter = document.getElementById('filterCanal').value;
+            const dateFrom = document.getElementById('dateFrom').value;
+            const dateTo = document.getElementById('dateTo').value;
+            
+            filteredMessages = allMessages.filter(msg => {
+                const autor = msg.getAttribute('data-autor').toLowerCase();
+                const conteudo = msg.getAttribute('data-conteudo').toLowerCase();
+                const data = msg.getAttribute('data-data');
+                const canal = msg.getAttribute('data-canal');
+                
+                // Filtro de busca (conteúdo ou autor)
+                const matchesSearch = !searchTerm || 
+                    conteudo.includes(searchTerm) || 
+                    autor.includes(searchTerm);
+                
+                // Filtro de canal
+                const matchesCanal = !canalFilter || canal === canalFilter;
+                
+                // Filtro de data
+                let matchesDate = true;
+                if (dateFrom || dateTo) {
+                    const msgDate = new Date(data);
+                    const msgYearMonth = msgDate.getFullYear() + '-' + String(msgDate.getMonth() + 1).padStart(2, '0');
+                    
+                    if (dateFrom && msgYearMonth < dateFrom) {
+                        matchesDate = false;
+                    }
+                    if (dateTo && msgYearMonth > dateTo) {
+                        matchesDate = false;
+                    }
+                }
+                
+                return matchesSearch && matchesCanal && matchesDate;
+            });
+            
+            // Resetar para primeira página e aplicar paginação
+            currentPage = 1;
+            applyPagination();
+            renderPagination();
+            updateResultsInfo();
+            expandChannelsWithResults();
+        }
+        
+        // Limpar filtros
+        function clearFilters() {
+            document.getElementById('searchContent').value = '';
+            document.getElementById('filterCanal').value = '';
+            document.getElementById('dateFrom').value = '';
+            document.getElementById('dateTo').value = '';
+            
+            filteredMessages = [...allMessages];
+            currentPage = 1;
+            applyPagination();
+            renderPagination();
+            updateResultsInfo();
+            collapseAllChannels();
+        }
+        
+        // Aplicar paginação
+        function applyPagination() {
+            const startIndex = (currentPage - 1) * messagesPerPage;
+            const endIndex = startIndex + messagesPerPage;
+            
+            // Esconder todas as mensagens
+            allMessages.forEach(msg => {
+                msg.style.display = 'none';
+                msg.classList.remove('highlight');
+            });
+            
+            // Mostrar apenas mensagens da página atual
+            filteredMessages.slice(startIndex, endIndex).forEach(msg => {
+                msg.style.display = 'block';
+                
+                // Highlight se houver busca
+                const searchTerm = document.getElementById('searchContent').value;
+                if (searchTerm) {
+                    msg.classList.add('highlight');
+                }
+            });
+            
+            // Atualizar contador
+            document.getElementById('showingCount').textContent = 
+                Math.min(filteredMessages.length, endIndex) - startIndex;
+        }
+        
+        // Mudar página
+        function changePage(direction) {
+            const totalPages = Math.ceil(filteredMessages.length / messagesPerPage);
+            
+            switch(direction) {
+                case 'first':
+                    currentPage = 1;
+                    break;
+                case 'prev':
+                    if (currentPage > 1) currentPage--;
+                    break;
+                case 'next':
+                    if (currentPage < totalPages) currentPage++;
+                    break;
+                case 'last':
+                    currentPage = totalPages;
+                    break;
+                default:
+                    currentPage = parseInt(direction);
+            }
+            
+            applyPagination();
+            renderPagination();
+            expandChannelsWithResults();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Renderizar botões de paginação
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredMessages.length / messagesPerPage);
+            
+            // Atualizar botões de navegação
+            document.getElementById('firstBtn').disabled = currentPage === 1;
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = currentPage === totalPages;
+            document.getElementById('lastBtn').disabled = currentPage === totalPages;
+            
+            // Renderizar números de página
+            const pageNumbers = document.getElementById('pageNumbers');
+            pageNumbers.innerHTML = '';
+            
+            // Mostrar até 5 páginas por vez
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+            
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = 'page-number' + (i === currentPage ? ' active' : '');
+                pageBtn.textContent = i;
+                pageBtn.onclick = () => changePage(i);
+                pageNumbers.appendChild(pageBtn);
+            }
+        }
+        
+        // Atualizar informações de resultados
+        function updateResultsInfo() {
+            const info = document.getElementById('resultsInfo');
+            const totalPages = Math.ceil(filteredMessages.length / messagesPerPage);
+            
+            if (filteredMessages.length === allMessages.length) {
+                info.textContent = `Total: ${allMessages.length} mensagens`;
+            } else {
+                info.textContent = `Encontradas ${filteredMessages.length} mensagens de ${allMessages.length} | Página ${currentPage} de ${totalPages}`;
+            }
+        }
+        
+        // Expandir canais com resultados
+        function expandChannelsWithResults() {
+            const visibleMessages = filteredMessages.slice(
+                (currentPage - 1) * messagesPerPage,
+                currentPage * messagesPerPage
+            );
+            
+            const canaisComResultados = new Set();
+            visibleMessages.forEach(msg => {
+                if (msg.style.display !== 'none') {
+                    canaisComResultados.add(msg.getAttribute('data-canal'));
+                }
+            });
+            
+            document.querySelectorAll('.channel').forEach((channel, index) => {
+                const canalNome = channel.getAttribute('data-canal-nome');
+                const content = document.getElementById('channel-content-' + index);
+                const icon = document.getElementById('collapse-icon-' + index);
+                
+                if (canaisComResultados.has(canalNome)) {
+                    content.classList.add('expanded');
+                    icon.classList.remove('collapsed');
+                }
+            });
+        }
+        
+        // Colapsar todos os canais
+        function collapseAllChannels() {
+            document.querySelectorAll('.channel-content').forEach(content => {
+                content.classList.remove('expanded');
+            });
+            document.querySelectorAll('.collapse-icon').forEach(icon => {
+                icon.classList.add('collapsed');
+            });
+        }
+        
+        // Busca em tempo real 
+        //document.getElementById('searchContent').addEventListener('input', applyFilters);
+    </script>
 </body>
 </html>
