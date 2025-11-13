@@ -79,6 +79,18 @@
     		<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
+		<!-- Dependência para usar Jackson para manipulação de JSON -->
+		<dependency>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-databind</artifactId>
+		</dependency>
+
+		<!-- Dependência para uso do Jakarta -->
+		<dependency>
+    		<groupId>jakarta.annotation</groupId>
+    		<artifactId>jakarta.annotation-api</artifactId>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>G.D.M. - Discord Messages</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #36393f;
+            color: #dcddde;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .server-info {
+            background-color: #2f3136;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .server-info h2 {
+            color: #7289da;
+            margin-bottom: 10px;
+        }
+        
+        .channels-container {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .channel {
+            background-color: #2f3136;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .channel-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #7289da;
+        }
+        
+        .channel-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        .channel-name {
+            color: #7289da;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .message-count {
+            margin-left: auto;
+            background-color: #7289da;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.9em;
+        }
+        
+        .messages {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            background-color: #40444b;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #7289da;
+            transition: all 0.2s;
+        }
+        
+        .message:hover {
+            background-color: #484c52;
+            transform: translateX(5px);
+        }
+        
+        .message-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .author-name {
+            color: #7289da;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .message-date {
+            color: #72767d;
+            font-size: 0.85em;
+        }
+        
+        .message-content {
+            color: #dcddde;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            word-wrap: break-word;
+        }
+        
+        .message-content:empty::before {
+            content: "(sem conteúdo de texto)";
+            color: #72767d;
+            font-style: italic;
+        }
+        
+        .attachments {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .attachment {
+            background-color: #2f3136;
+            padding: 8px 12px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #00aff4;
+            transition: background-color 0.2s;
+        }
+        
+        .attachment:hover {
+            background-color: #36393f;
+            color: #00d9ff;
+        }
+        
+        .attachment-icon::before {
+            content: "📎";
+        }
+        
+        .back-btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 12px;
+            text-align: center;
+            background-color: #7289da;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .back-btn:hover {
+            background-color: #5b6eae;
+        }
+        
+        .no-messages {
+            text-align: center;
+            color: #72767d;
+            padding: 40px;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .channel-name {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Discord - G.D.M.</h1>
+        
+        <div class="server-info" th:if="${servidor}">
+            <h2>Servidor: <span th:text="${servidor.nome}">Nome do Servidor</span></h2>
+            <p style="color: #72767d;">ID: <span th:text="${servidor.id}">ID</span></p>
+        </div>
+        
+        <div class="channels-container">
+            <div class="channel" th:each="canal : ${servidor.canais}">
+                <div class="channel-header">
+                    <span class="channel-icon">#</span>
+                    <span class="channel-name" th:text="${canal.nome}">nome-do-canal</span>
+                    <span class="message-count" th:text="${#lists.size(canal.mensagens)} + ' mensagens'">0 mensagens</span>
+                </div>
+                
+                <div class="messages" th:if="${!#lists.isEmpty(canal.mensagens)}">
+                    <div class="message" th:each="msg : ${canal.mensagens}">
+                        <div class="message-header">
+                            <span class="author-name" th:text="${msg.autorNome}">Autor</span>
+                            <span class="message-date" th:text="${msg.data}">Data</span>
+                        </div>
+                        
+                        <div class="message-content" th:text="${msg.conteudo}">
+                            Conteúdo da mensagem
+                        </div>
+                        
+                        <div class="attachments" th:if="${!#lists.isEmpty(msg.arquivos)}">
+                            <a th:each="arquivo : ${msg.arquivos}" 
+                               th:href="${arquivo}" 
+                               class="attachment" 
+                               target="_blank">
+                                <span class="attachment-icon"></span>
+                                <span>Arquivo</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="no-messages" th:if="${#lists.isEmpty(canal.mensagens)}">
+                    Nenhuma mensagem neste canal
+                </div>
+            </div>
+        </div>
+        
+        <a href="/" class="back-btn">← Voltar para Home</a>
+    </div>
+</body>
+</html>
